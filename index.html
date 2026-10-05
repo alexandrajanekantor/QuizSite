@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ms. Hyde</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- Intro -->
+    <section id="intro" class="screen active" aria-labelledby="intro-title">
+      <p class="suits" aria-hidden="true"><span>♠</span><span class="red">♥</span><span>♣</span><span class="red">♦</span></p>
+      <p class="eyebrow">A quiz of five questions</p>
+      <h1 id="intro-title">Ms. Hyde</h1>
+      <p class="lede">How well do you know my alter ego? Lift the mask, answer honestly, and find out.</p>
+      <button id="start" class="btn">Begin</button>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="screen" aria-live="polite">
+      <header class="quiz-head">
+        <span id="progress">Question 1 of 5</span>
+        <span id="score-live">Score: 0</span>
+      </header>
+
+      <div class="card" id="card">
+        <span class="corner tl" id="corner-tl" aria-hidden="true"></span>
+        <span class="corner br" id="corner-br" aria-hidden="true"></span>
+        <div class="question-layer" id="question-layer" aria-hidden="true">
+          <h2 id="question-text"></h2>
+          <ul id="answers" class="answers"></ul>
+          <p id="feedback" class="feedback" role="status"></p>
+          <button id="next" class="btn" hidden>Next</button>
+        </div>
+
+        <button id="mask" class="mask" aria-label="Lift the mask to reveal the question">
+          <span class="medallion"><svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="maskGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f4efe6"/>
+                <stop offset="1" stop-color="#cfc5b4"/>
+              </linearGradient>
+            </defs>
+            <!-- face -->
+            <path d="M100 8C52 8 16 40 16 92c0 20 6 36 16 50 12 17 28 28 44 44 8 8 16 18 24 18s16-10 24-18c16-16 32-27 44-44 10-14 16-30 16-50C184 40 148 8 100 8Z"
+                  fill="url(#maskGrad)" stroke="#8a7a5c" stroke-width="2"/>
+            <!-- gold trim -->
+            <path d="M100 8C52 8 16 40 16 92" fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round"/>
+            <path d="M100 8c48 0 84 32 84 84" fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round"/>
+            <!-- eyes -->
+            <path d="M34 88c10-18 34-24 50-8 4 4 2 14-6 20-14 10-36 8-44-12Z" fill="#14101c"/>
+            <path d="M166 88c-10-18-34-24-50-8-4 4-2 14 6 20 14 10 36 8 44-12Z" fill="#14101c"/>
+            <!-- brow flourishes -->
+            <path d="M30 74c14-14 38-18 56-6" fill="none" stroke="#c9a24b" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M170 74c-14-14-38-18-56-6" fill="none" stroke="#c9a24b" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- nose -->
+            <path d="M100 104c-6 14-10 26-4 32 3 3 8 3 8 0 6-6 2-18-4-32Z" fill="none" stroke="#8a7a5c" stroke-width="2"/>
+            <!-- cheek diamonds -->
+            <path d="M52 140l8-10 8 10-8 10Z M132 140l8-10 8 10-8 10Z" fill="#7a1f3d"/>
+            <!-- smile -->
+            <path d="M72 168c18 12 38 12 56 0" fill="none" stroke="#7a1f3d" stroke-width="3" stroke-linecap="round"/>
+          </svg></span>
+          <span class="mask-hint">Click the mask</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="screen" aria-labelledby="results-title">
+      <p class="suits" aria-hidden="true"><span>♠</span><span class="red">♥</span><span>♣</span><span class="red">♦</span></p>
+      <p class="eyebrow">The mask comes off</p>
+      <h2 id="results-title">Your score</h2>
+      <p class="big-score"><span id="final-score">0</span><span class="out-of"> / 5</span></p>
+      <p id="verdict" class="lede"></p>
+      <button id="restart" class="btn">Play again</button>
+    </section>
+
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
