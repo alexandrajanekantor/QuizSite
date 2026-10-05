@@ -10,77 +10,151 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main id="app">
 
-    <!-- Intro -->
-    <section id="intro" class="screen active" aria-labelledby="intro-title">
-      <p class="suits" aria-hidden="true"><span>♠</span><span class="red">♥</span><span>♣</span><span class="red">♦</span></p>
-      <p class="eyebrow">A quiz of five questions</p>
-      <h1 id="intro-title">Ms. Hyde</h1>
-      <p class="lede">How well do you know my alter ego? Lift the mask, answer honestly, and find out.</p>
-      <button id="start" class="btn">Begin</button>
-    </section>
+  <!-- Shared art: the mask, drawn once and reused -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+        <line x1="0" y1="0" x2="0" y2="5" stroke="#14101c" stroke-width="1"/>
+      </pattern>
+      <symbol id="mask-art" viewBox="0 0 200 240">
+        <defs>
+          <linearGradient id="maskGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f4efe6"/>
+            <stop offset="1" stop-color="#cfc5b4"/>
+          </linearGradient>
+        </defs>
+        <path d="M100 8C52 8 16 40 16 92c0 20 6 36 16 50 12 17 28 28 44 44 8 8 16 18 24 18s16-10 24-18c16-16 32-27 44-44 10-14 16-30 16-50C184 40 148 8 100 8Z" fill="url(#maskGrad)" stroke="#8a7a5c" stroke-width="2"/>
+        <path d="M100 8C52 8 16 40 16 92" fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round"/>
+        <path d="M100 8c48 0 84 32 84 84" fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round"/>
+        <path d="M34 88c10-18 34-24 50-8 4 4 2 14-6 20-14 10-36 8-44-12Z" fill="#14101c"/>
+        <path d="M166 88c-10-18-34-24-50-8-4 4-2 14 6 20 14 10 36 8 44-12Z" fill="#14101c"/>
+        <path d="M30 74c14-14 38-18 56-6" fill="none" stroke="#c9a24b" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M170 74c-14-14-38-18-56-6" fill="none" stroke="#c9a24b" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M100 104c-6 14-10 26-4 32 3 3 8 3 8 0 6-6 2-18-4-32Z" fill="none" stroke="#8a7a5c" stroke-width="2"/>
+        <path d="M52 140l8-10 8 10-8 10Z M132 140l8-10 8 10-8 10Z" fill="#7a1f3d"/>
+        <path d="M72 168c18 12 38 12 56 0" fill="none" stroke="#7a1f3d" stroke-width="3" stroke-linecap="round"/>
+      </symbol>
 
-    <!-- Quiz -->
-    <section id="quiz" class="screen" aria-live="polite">
-      <header class="quiz-head">
-        <span id="progress">Question 1 of 5</span>
-        <span id="score-live">Score: 0</span>
-      </header>
+      <!-- One half of the court-card figure (drawn once, then flipped) -->
+      <g id="court-half">
+        <!-- robe -->
+        <path d="M34 170C34 126 74 108 120 108s86 18 86 62Z" fill="#7a1f3d" stroke="#14101c" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M34 170C34 126 74 108 120 108s86 18 86 62Z" fill="url(#hatch)" opacity=".28"/>
+        <!-- blue sash -->
+        <path d="M64 124l28-12 114 58h-46Z" fill="#3d4f94" stroke="#14101c" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M84 120l22-9 72 36" fill="none" stroke="#f4efe6" stroke-width="2" stroke-dasharray="4 4"/>
+        <!-- medal -->
+        <circle cx="120" cy="148" r="12" fill="#c9a24b" stroke="#14101c" stroke-width="3"/>
+        <circle cx="120" cy="148" r="4" fill="#7a1f3d" stroke="#14101c" stroke-width="1.5"/>
+        <!-- collar -->
+        <path d="M92 110c8 14 48 14 56 0l-6-4c-8 8-36 8-44 0Z" fill="#f4efe6" stroke="#14101c" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- hat -->
+        <path d="M88 44l4-18 14 10 14-14 14 14 14-10 4 18Z" fill="#c9a24b" stroke="#14101c" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="88" y="44" width="64" height="8" fill="#3d4f94" stroke="#14101c" stroke-width="3"/>
+        <!-- masked head -->
+        <use href="#mask-art" x="92" y="48" width="56" height="67"/>
+        <!-- flower held in hand -->
+        <path d="M190 150c0-16-4-30-12-44" fill="none" stroke="#14101c" stroke-width="3" stroke-linecap="round"/>
+        <g transform="translate(176 96)">
+          <circle r="13" fill="#c9a24b" stroke="#14101c" stroke-width="2.5"/>
+          <circle r="5" fill="#7a1f3d" stroke="#14101c" stroke-width="2"/>
+        </g>
+      </g>
+    </defs>
+  </svg>
 
-      <div class="card" id="card">
-        <span class="corner tl" id="corner-tl" aria-hidden="true"></span>
-        <span class="corner br" id="corner-br" aria-hidden="true"></span>
-        <div class="question-layer" id="question-layer" aria-hidden="true">
-          <h2 id="question-text"></h2>
-          <ul id="answers" class="answers"></ul>
-          <p id="feedback" class="feedback" role="status"></p>
-          <button id="next" class="btn" hidden>Next</button>
+  <div class="frame">
+    <div class="strip top" data-edge="top" aria-hidden="true"></div>
+    <div class="side left" data-edge="left" aria-hidden="true"></div>
+  <div class="page">
+
+    <main id="app">
+
+      <!-- Intro / starting page -->
+      <section id="intro" class="screen active" aria-labelledby="intro-title">
+        <p class="eyebrow">An Entertainment in Five Cards</p>
+        <h1 id="intro-title">Ms. Hyde</h1>
+        <p class="rule" aria-hidden="true"><span>♠</span><span class="red">♥</span><span>♣</span><span class="red">♦</span></p>
+
+        <div class="intro-grid">
+          <figure class="portrait">
+            <svg viewBox="0 0 240 340" role="img" aria-label="Ms. Hyde, drawn as the Queen in an antique deck of playing cards">
+              <rect x="5" y="5" width="230" height="330" rx="6" fill="#fffaf0" stroke="#14101c" stroke-width="3"/>
+              <rect x="13" y="13" width="214" height="314" rx="3" fill="none" stroke="#14101c" stroke-width="1.2"/>
+              <use href="#court-half"/>
+              <use href="#court-half" transform="rotate(180 120 170)"/>
+              <path d="M13 170h214" stroke="#14101c" stroke-width="2"/>
+              <g font-family="Cormorant Garamond, serif" font-weight="700" text-anchor="middle">
+                <g><text x="30" y="46" font-size="26" fill="#14101c">Q</text><text x="30" y="74" font-size="26" fill="#7a1f3d">♥</text></g>
+                <g transform="rotate(180 120 170)"><text x="30" y="46" font-size="26" fill="#14101c">Q</text><text x="30" y="74" font-size="26" fill="#7a1f3d">♥</text></g>
+              </g>
+            </svg>
+            <figcaption>The Queen of Masks</figcaption>
+          </figure>
+
+          <div class="intro-copy">
+            <h2>Meet Ms. Hyde</h2>
+            <p>Every deck hides a face card nobody quite expects. Ms. Hyde is mine: the alter ego who steps out the moment the mask goes on. She has her habits, her tastes and her secrets, and she rarely shows her hand.</p>
+            <p>This little quiz puts you to the test. Five cards, five questions, and only one thing to prove: how well do you really know her?</p>
+          </div>
         </div>
 
-        <button id="mask" class="mask" aria-label="Lift the mask to reveal the question">
-          <span class="medallion"><svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="maskGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#f4efe6"/>
-                <stop offset="1" stop-color="#cfc5b4"/>
-              </linearGradient>
-            </defs>
-            <!-- face -->
-            <path d="M100 8C52 8 16 40 16 92c0 20 6 36 16 50 12 17 28 28 44 44 8 8 16 18 24 18s16-10 24-18c16-16 32-27 44-44 10-14 16-30 16-50C184 40 148 8 100 8Z"
-                  fill="url(#maskGrad)" stroke="#8a7a5c" stroke-width="2"/>
-            <!-- gold trim -->
-            <path d="M100 8C52 8 16 40 16 92" fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round"/>
-            <path d="M100 8c48 0 84 32 84 84" fill="none" stroke="#c9a24b" stroke-width="3" stroke-linecap="round"/>
-            <!-- eyes -->
-            <path d="M34 88c10-18 34-24 50-8 4 4 2 14-6 20-14 10-36 8-44-12Z" fill="#14101c"/>
-            <path d="M166 88c-10-18-34-24-50-8-4 4-2 14 6 20 14 10 36 8 44-12Z" fill="#14101c"/>
-            <!-- brow flourishes -->
-            <path d="M30 74c14-14 38-18 56-6" fill="none" stroke="#c9a24b" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M170 74c-14-14-38-18-56-6" fill="none" stroke="#c9a24b" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- nose -->
-            <path d="M100 104c-6 14-10 26-4 32 3 3 8 3 8 0 6-6 2-18-4-32Z" fill="none" stroke="#8a7a5c" stroke-width="2"/>
-            <!-- cheek diamonds -->
-            <path d="M52 140l8-10 8 10-8 10Z M132 140l8-10 8 10-8 10Z" fill="#7a1f3d"/>
-            <!-- smile -->
-            <path d="M72 168c18 12 38 12 56 0" fill="none" stroke="#7a1f3d" stroke-width="3" stroke-linecap="round"/>
-          </svg></span>
-          <span class="mask-hint">Click the mask</span>
-        </button>
-      </div>
-    </section>
+        <h2 class="section-title">How to play</h2>
+        <ol class="steps">
+          <li><span class="num">I</span><strong>Draw a card</strong><span>Each question waits face down behind a mask.</span></li>
+          <li><span class="num">II</span><strong>Lift the mask</strong><span>Click it, and the question is revealed.</span></li>
+          <li><span class="num">III</span><strong>Choose wisely</strong><span>Three answers, one right. You'll know at once.</span></li>
+          <li><span class="num">IV</span><strong>Count your tricks</strong><span>After the fifth card, see your final score.</span></li>
+        </ol>
 
-    <!-- Results -->
-    <section id="results" class="screen" aria-labelledby="results-title">
-      <p class="suits" aria-hidden="true"><span>♠</span><span class="red">♥</span><span>♣</span><span class="red">♦</span></p>
-      <p class="eyebrow">The mask comes off</p>
-      <h2 id="results-title">Your score</h2>
-      <p class="big-score"><span id="final-score">0</span><span class="out-of"> / 5</span></p>
-      <p id="verdict" class="lede"></p>
-      <button id="restart" class="btn">Play again</button>
-    </section>
+        <button id="start" class="btn">Deal me in</button>
+      </section>
 
-  </main>
+      <!-- Quiz -->
+      <section id="quiz" class="screen" aria-live="polite">
+        <header class="quiz-head">
+          <span id="progress">Question 1 of 5</span>
+          <span id="score-live">Score: 0</span>
+        </header>
+
+        <div class="card" id="card">
+          <span class="corner tl" id="corner-tl" aria-hidden="true"></span>
+          <span class="corner br" id="corner-br" aria-hidden="true"></span>
+          <div class="question-layer" id="question-layer" aria-hidden="true">
+            <h2 id="question-text"></h2>
+            <ul id="answers" class="answers"></ul>
+            <p id="feedback" class="feedback" role="status"></p>
+            <button id="next" class="btn" hidden>Next</button>
+          </div>
+
+          <button id="mask" class="mask" aria-label="Lift the mask to reveal the question">
+            <span class="medallion">
+              <svg viewBox="0 0 200 240" aria-hidden="true"><use href="#mask-art"/></svg>
+            </span>
+            <span class="back-diamond" aria-hidden="true">♦</span>
+            <span class="mask-hint">Click the mask</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section id="results" class="screen" aria-labelledby="results-title">
+        <p class="eyebrow">The mask comes off</p>
+        <h2 id="results-title">Your score</h2>
+        <p class="rule" aria-hidden="true"><span>♠</span><span class="red">♥</span><span>♣</span><span class="red">♦</span></p>
+        <div class="panel">
+          <p class="big-score"><span id="final-score">0</span><span class="out-of"> / 5</span></p>
+          <p id="verdict" class="lede"></p>
+        </div>
+        <button id="restart" class="btn">Play again</button>
+      </section>
+
+    </main>
+  </div>
+    <div class="side right" data-edge="right" aria-hidden="true"></div>
+    <div class="strip bottom" data-edge="bottom" aria-hidden="true"></div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

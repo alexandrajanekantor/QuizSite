@@ -162,3 +162,49 @@ $("start").addEventListener("click", start);
 $("restart").addEventListener("click", start);
 $("mask").addEventListener("click", liftMask);
 $("next").addEventListener("click", next);
+
+// ---------------------------------------------------------------
+// Card border: tile the cut-out cards along each edge of the page.
+// ---------------------------------------------------------------
+const CARD_COUNT = 8;
+const edgeOffsets = { top: 0, right: 2, bottom: 4, left: 6 };
+
+function fillEdge(el) {
+  const horizontal = el.classList.contains("strip");
+  const probe = el.querySelector("img");
+  const step = horizontal ? (probe ? probe.offsetWidth : 58) - 6 : (probe ? probe.offsetHeight : 90) - 6;
+  const length = horizontal ? el.clientWidth : el.clientHeight;
+  const needed = Math.max(0, Math.ceil(length / step) + 1);
+
+  let track = el.querySelector(".track");
+  if (!track) {
+    track = document.createElement("div");
+    track.className = "track";
+    el.appendChild(track);
+  }
+  if (track.children.length === needed) return;
+
+  const offset = edgeOffsets[el.dataset.edge] || 0;
+  track.innerHTML = "";
+  for (let n = 0; n < needed; n++) {
+    const img = document.createElement("img");
+    img.src = `cards/card-${((n + offset) % CARD_COUNT) + 1}.jpg`;
+    img.alt = "";
+    img.draggable = false;
+    track.appendChild(img);
+  }
+}
+
+function fillBorder() {
+  document.querySelectorAll(".strip, .side").forEach((el) => {
+    if (el.offsetParent !== null) fillEdge(el);
+  });
+}
+
+if ("ResizeObserver" in window) {
+  const ro = new ResizeObserver(fillBorder);
+  document.querySelectorAll(".strip, .side").forEach((el) => ro.observe(el));
+} else {
+  window.addEventListener("resize", fillBorder);
+}
+fillBorder();
